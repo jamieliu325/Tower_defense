@@ -51,10 +51,10 @@ waves = [
 # load munis
 pygame.mixer.music.load(os.path.join("game_assets","music.flac"))
 
-attack_tower_names = ["archer","archer_2"]
+attack_tower_names = ["archer","archer2"]
 support_tower_names = ["range","damage"]
 
-win=pygame.display.set_mode((1350,700))
+# win=pygame.display.set_mode((1350,700))
 
 class Game:
     def __init__(self,win):
@@ -171,7 +171,7 @@ class Game:
                             btn_clicked = self.selected_tower.menu.get_clicked(pos[0],pos[1])
                             if btn_clicked == "Upgrade":
                                 cost = self.selected_tower.get_upgrade_cost()
-                                if self.money>=cost:
+                                if cost != "MAX" and self.money>=cost:
                                     self.money-=cost
                                     self.selected_tower.upgrade()
                         if not btn_clicked:
@@ -215,14 +215,15 @@ class Game:
         # drawing placement rings:
         if self.moving_object:
             for tower in self.attack_towers:
-                tower.draw_radius(self.win)
+                tower.draw_placement(self.win)
             for tower in self.support_towers:
-                tower.draw_radius(self.win)
-            self.moving_object.draw_radius(self.win)
+                tower.draw_placement(self.win)
+            self.moving_object.draw_placement(self.win)
 
         # draw towers
         for tw in self.attack_towers:
             tw.draw(self.win)
+
         for tw in self.support_towers:
             tw.draw(self.win)
 
@@ -263,7 +264,7 @@ class Game:
 
         # draw wave
         self.win.blit(wave_bg,(10,10))
-        text=self.life_font.render("Wave #"+str(self.wave-1),1,(255,255,255))
+        text=self.life_font.render("Wave #"+str(self.wave),1,(255,255,255))
         self.win.blit(text,(10+wave_bg.get_width()/2-text.get_width()/2,25))
 
         pygame.display.update()
@@ -279,7 +280,5 @@ class Game:
         except Exception as e:
             print(str(e)+"NOT VALID NAME")
 
-game=Game(win)
-game.run()
 
 

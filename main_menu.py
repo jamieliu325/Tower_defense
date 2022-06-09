@@ -5,7 +5,7 @@ from game import Game
 # load start button and logo
 start_btn = pygame.image.load(os.path.join("game_assets","button_play.png"))
 logo = pygame.image.load(os.path.join("game_assets","logo.png"))
-
+win=pygame.display.set_mode((1350, 700))
 class MainMenu:
 
     def __int__(self):
@@ -13,7 +13,7 @@ class MainMenu:
         self.height = 700
         self.bg = pygame.image.load(os.path.join("game_assets","bg.png"))
         self.bg = pygame.transform.scale(self.bg,(self.width,self.height))
-        self.win = pygame.display.set_mode((self.width,self.height))
+        self.win=win
         self.btn = (self.width/2 - start_btn.get_width()/2, 350, start_btn.get_width(),start_btn.get_height())
 
     def run(self):
