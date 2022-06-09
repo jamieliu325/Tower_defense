@@ -1,7 +1,7 @@
 import pygame
 import os
 import math
-from tower import Tower
+from .tower import Tower
 
 range_imgs = [
     pygame.transform.scale(pygame.image.load(os.path.join("game_assets/support_towers","4.png")),(90,90)),
@@ -10,8 +10,8 @@ range_imgs = [
 
 # range tower is to add extra range to each surrounding tower
 class RangeTower(Tower):
-    def __init__(self):
-        super().__init__()
+    def __init__(self,x,y):
+        super().__init__(x,y)
         self.range = 75
         self.effect = [0.2,0.4]
         self.tower_imgs = range_imgs
@@ -46,8 +46,8 @@ damage_imgs = [
 
 # add damage effect to surrounding towers
 class DamageTower(Tower):
-    def __init__(self):
-        super().__init__()
+    def __init__(self,x,y):
+        super().__init__(x,y)
         self.range=100
         self.tower_imgs=damage_imgs
         self.effect=[0.5,1]

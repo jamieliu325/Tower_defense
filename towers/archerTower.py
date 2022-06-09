@@ -1,7 +1,7 @@
 import pygame
 import os
 import math
-from tower import Tower
+from .tower import Tower
 from menu import Menu
 
 menu_bg = pygame.transform.scale(pygame.image.load(os.path.join("game_assets","menu.png")),(120,70))
@@ -14,12 +14,12 @@ archer_imgs1 = []
 for x in range(7,10):
     tower_imgs1.append(pygame.transform.scale(pygame.image.load(os.path.join("game_assets/archer_towers/archer_1",str(x)+".png")),(90,90)))
 
-for x in range(37,43):
+for x in range(38,44):
     archer_imgs1.append(pygame.image.load(os.path.join("game_assets/archer_towers/archer_top",str(x)+".png")))
 
 class ArcherTowerLong(Tower):
-    def __init__(self):
-        super().__init__()
+    def __init__(self,x,y):
+        super().__init__(x,y)
         self.tower_imgs = tower_imgs1
         self.archer_imgs = archer_imgs1[:]
         self.archer_count = 0
@@ -28,6 +28,7 @@ class ArcherTowerLong(Tower):
         self.inRange = False
         self.left=True
         self.damage=1
+        self.original_damage=self.damage
         self.width=self.height=90
         self.moving=False
         self.name="archer"
@@ -113,12 +114,12 @@ archer_imgs2=[]
 for x in range(10,13):
     tower_imgs2.append(pygame.transform.scale(pygame.image.load(os.path.join("game_assets/archer_towers/archer_2",str(x)+".png")),(90,90)))
 
-for x in range(43,49):
+for x in range(51,57):
     archer_imgs2.append(pygame.image.load(os.path.join("game_assets/archer_towers/archer_top_2",str(x)+".png")))
 
 class ArcherTowerShort(ArcherTowerLong):
-    def __init__(self):
-        super().__init__()
+    def __init__(self,x,y):
+        super().__init__(x,y)
         self.tower_imgs2=tower_imgs2
         self.archer_imgs=archer_imgs2[:]
         self.archer_count = 0

@@ -1,6 +1,6 @@
 import pygame
 import os
-from enemy import Enemy
+from .enemy import Enemy
 
 imgs=[]
 for x in range(20):

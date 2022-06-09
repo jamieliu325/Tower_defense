@@ -143,8 +143,8 @@ class VerticalMenu(Menu):
         self.y = y
         self.width = img.get_width()
         self.height = img.get_height()
-        self.button = []
-        self.item = 0
+        self.buttons = []
+        self.items = 0
         self.bg = img
         self.font = pygame.font.SysFont("comiscans",25)
 
