@@ -5,10 +5,10 @@ from game import Game
 # load start button and logo
 start_btn = pygame.image.load(os.path.join("game_assets","button_play.png"))
 logo = pygame.image.load(os.path.join("game_assets","logo.png"))
-win=pygame.display.set_mode((1350, 700))
+
 class MainMenu:
 
-    def __int__(self):
+    def __init__(self,win):
         self.width = 1350
         self.height = 700
         self.bg = pygame.image.load(os.path.join("game_assets","bg.png"))

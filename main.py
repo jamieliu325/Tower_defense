@@ -6,7 +6,7 @@ if __name__=="__main__":
     win = pygame.display.set_mode((1350, 700))
     from main_menu import MainMenu
     # create a window
-    mainMenu=MainMenu()
+    mainMenu=MainMenu(win)
     mainMenu.run()
 
 
