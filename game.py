@@ -152,10 +152,13 @@ class Game:
                             self.pause = not self.pause
                             self.playPauseButton.paused=self.pause
                         elif self.soundButton.click(pos[0],pos[1]):
-                            self.music_on=not self.music_on
+                            self.music_on = not self.music_on
+                            self.soundButton.paused = self.music_on
                             if self.music_on:
+                                # self.soundButton = PlayPauseButton(sound_btn, sound_btn_off, 90, self.height - 85)
                                 pygame.mixer.music.unpause()
                             else:
+                                # self.soundButton = PlayPauseButton(sound_btn_off, sound_btn_off, 90, self.height - 85)
                                 pygame.mixer.music.pause()
                         # check if click on side menu
                         side_menu_button = self.menu.get_clicked(pos[0],pos[1])

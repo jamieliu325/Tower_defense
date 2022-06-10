@@ -40,7 +40,7 @@ class MainMenu:
     # draw background map, logo, and start button on the window
     def draw(self):
         self.win.blit(self.bg,(0,0))
-        self.win.blit(logo,(self.width/2-logo.get_width(),0))
+        self.win.blit(logo,(self.width/2-logo.get_width()/2,0))
         self.win.blit(start_btn,(self.btn[0],self.btn[1]))
         pygame.display.update()
 

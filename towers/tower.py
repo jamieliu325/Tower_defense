@@ -60,13 +60,6 @@ class Tower:
                 return True
         return False
 
-    def sell(self):
-        """
-        to sell the tower
-        :return: int
-        """
-        return self.sell_price[self.level-1]
-
     def upgrade(self):
         """
         upgrade the tower
