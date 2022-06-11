@@ -2,7 +2,7 @@ import pygame
 import os
 from game import Game
 
-# load start button and logo
+# load start button and game logo
 start_btn = pygame.image.load(os.path.join("game_assets","button_play.png"))
 logo = pygame.image.load(os.path.join("game_assets","logo.png"))
 
@@ -24,17 +24,19 @@ class MainMenu:
                 # check if game is quit
                 if event.type == pygame.QUIT:
                     run = False
-                # check if mouse hits play button when mouse is released
+                # check if mouse hits play button
                 if event.type == pygame.MOUSEBUTTONUP:
-                    # the position where mouse hits
+                    # check if where the mouse hits is on the start button
                     x,y=pygame.mouse.get_pos()
                     if self.btn[0]<=x<=self.btn[0]+self.btn[2]:
                         if self.btn[1]<=y<=self.btn[1]+self.btn[3]:
+                            # run the game
                             game = Game(self.win)
                             game.run()
                             del game
+            # call draw function
             self.draw()
-
+        # quit the game
         pygame.quit()
 
     # draw background map, logo, and start button on the window

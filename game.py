@@ -10,13 +10,14 @@ from towers.archerTower import ArcherTowerLong,ArcherTowerShort
 from towers.supportTower import DamageTower,RangeTower
 import random
 
+# pygame initiation
 pygame.font.init()
 pygame.init()
 
 # path for enemies
 path = [(-10, 224),(19, 224), (177, 235), (282, 283), (526, 277), (607, 217), (641, 105), (717, 57), (796, 83), (855, 222), (973, 284), (1046, 366), (1022, 458), (894, 492), (740, 504), (580, 542), (148, 541), (10, 442), (-20, 335), (-75, 305), (-100, 345)]
 
-# load and scale images
+# load and scale images for the game
 lives_img = pygame.image.load(os.path.join("game_assets","heart.png"))
 star_img = pygame.image.load(os.path.join("game_assets","star.png"))
 side_img = pygame.transform.scale(pygame.image.load(os.path.join("game_assets","side.png")),(120,500))
@@ -30,8 +31,8 @@ sound_btn = pygame.transform.scale(pygame.image.load(os.path.join("game_assets",
 sound_btn_off = pygame.transform.scale(pygame.image.load(os.path.join("game_assets","button_sound_off.png")),(75,75))
 wave_bg = pygame.transform.scale(pygame.image.load(os.path.join("game_assets","wave.png")),(225,75))
 
-# set up enemies in waves
-# [scorpions, wizards, clubs, swords]
+# set up enemy waves
+# number of enemies for [scorpions, wizards, clubs, swords]
 waves = [
     [20, 0, 0],
     [50, 0, 0],
@@ -51,10 +52,9 @@ waves = [
 # load munis
 pygame.mixer.music.load(os.path.join("game_assets","music.flac"))
 
+# tower names
 attack_tower_names = ["archer","archer2"]
 support_tower_names = ["range","damage"]
-
-# win=pygame.display.set_mode((1350,700))
 
 class Game:
     def __init__(self,win):
@@ -68,7 +68,7 @@ class Game:
         self.money = 10000
         self.bg = pygame.transform.scale(pygame.image.load(os.path.join("game_assets","bg.png")),(self.width,self.height))
         self.timer = time.time()
-        self.life_font = pygame.font.SysFont("comicsans",65)
+        self.life_font = pygame.font.SysFont("comicsans",45)
         self.selected_tower = None
         self.menu = VerticalMenu(self.width - side_img.get_width()+70,250,side_img)
         self.menu.add_btn(buy_archer,"buy_archer",500)
@@ -85,8 +85,9 @@ class Game:
 
     def gen_enemies(self):
         """
-        generate the next wave of enemies or show enemies
-        :return: enemy
+        generate the next wave of enemies if all enemies are generated and removed from the game
+        generate enemies from the current wave
+        :return: None
         """
         if sum(self.current_wave) == 0:
             if len(self.enemies)==0:
@@ -99,40 +100,43 @@ class Game:
             for x in range(len(self.current_wave)):
                 if self.current_wave[x] != 0:
                     self.enemies.append(wave_enemies[x])
-                    self.current_wave[x]-=1
+                    self.current_wave[x] -= 1
 
     def run(self):
         pygame.mixer.music.play(loops=-1)
         run = True
         clock = pygame.time.Clock()
         while run:
+            # set up runtime speed of the game
             clock.tick(500)
             if self.pause == False:
-            # generate enemies
+            # generate enemies by setting up the frequency of generation
                 if time.time() - self.timer >= random.randrange(1,6)/3:
                     self.timer = time.time()
                     self.gen_enemies()
+
             pos = pygame.mouse.get_pos()
             # check for moving object
             if self.moving_object:
                 self.moving_object.move(pos[0],pos[1])
-                tower_list = self.attack_towers[:]+self.support_towers[:]
+                tower_list=self.attack_towers[:]+self.support_towers[:]
                 collide=False
                 for tower in tower_list:
                     if tower.collide(self.moving_object):
                         collide = True
                         tower.place_color=(255,0,0,100)
-                        self.moving_object.place_color=(0,0,255,100)
+                        self.moving_object.place_color=(255,0,0,100)
                     else:
                         tower.place_color=(0,0,255,100)
                         if not collide:
                             self.moving_object.place_color=(0,0,255,100)
+
             # main event loop
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     run = False
                 if event.type == pygame.MOUSEBUTTONUP:
-                    # if you are moving an object and click
+                    # if you are moving an object
                     if self.moving_object:
                         not_allowewd = False
                         tower_list=self.attack_towers[:]+self.support_towers[:]
@@ -155,10 +159,8 @@ class Game:
                             self.music_on = not self.music_on
                             self.soundButton.paused = self.music_on
                             if self.music_on:
-                                # self.soundButton = PlayPauseButton(sound_btn, sound_btn_off, 90, self.height - 85)
                                 pygame.mixer.music.unpause()
                             else:
-                                # self.soundButton = PlayPauseButton(sound_btn_off, sound_btn_off, 90, self.height - 85)
                                 pygame.mixer.music.pause()
                         # check if click on side menu
                         side_menu_button = self.menu.get_clicked(pos[0],pos[1])
@@ -172,6 +174,7 @@ class Game:
                         btn_clicked = None
                         if self.selected_tower:
                             btn_clicked = self.selected_tower.menu.get_clicked(pos[0],pos[1])
+                            # upgrade tower
                             if btn_clicked == "Upgrade":
                                 cost = self.selected_tower.get_upgrade_cost()
                                 if cost != "MAX" and self.money>=cost:
@@ -192,6 +195,7 @@ class Game:
                                     tw.selected=False
             # loop through enemies
             if not self.pause:
+                # check if enemies off screen
                 to_del = []
                 for en in self.enemies:
                     en.move()
@@ -215,7 +219,7 @@ class Game:
 
     def draw(self):
         self.win.blit(self.bg,(0,0))
-        # drawing placement rings:
+        # drawing placement circles:
         if self.moving_object:
             for tower in self.attack_towers:
                 tower.draw_placement(self.win)
@@ -223,14 +227,14 @@ class Game:
                 tower.draw_placement(self.win)
             self.moving_object.draw_placement(self.win)
 
-        # draw towers
+        # draw attack and support towers
         for tw in self.attack_towers:
             tw.draw(self.win)
 
         for tw in self.support_towers:
             tw.draw(self.win)
 
-        #draw enemies
+        # draw enemies
         for en in self.enemies:
             en.draw(self.win)
 
@@ -241,6 +245,7 @@ class Game:
         # draw moving object
         if self.moving_object:
             self.moving_object.draw(self.win)
+
 
         # draw menu
         self.menu.draw(self.win)
@@ -255,20 +260,20 @@ class Game:
         text = self.life_font.render(str(self.lives),1,(255,255,255))
         life = pygame.transform.scale(lives_img,(50,50))
         start_x = self.width - life.get_width() -10
-        self.win.blit(text,(start_x-text.get_width()-10,13))
+        self.win.blit(text,(start_x-text.get_width()-10,0))
         self.win.blit(life,(start_x,10))
 
         # draw money
         text = self.life_font.render(str(self.money),1,(255,255,255))
         money = pygame.transform.scale(star_img,(50,50))
-        start_x = self.width - life.get_width()-10
-        self.win.blit(text,(start_x-text.get_width()-10,75))
+        money_x = self.width - money.get_width()-10
+        self.win.blit(text,(money_x-text.get_width()-10,60))
         self.win.blit(money,(start_x,65))
 
         # draw wave
         self.win.blit(wave_bg,(10,10))
         text=self.life_font.render("Wave #"+str(self.wave),1,(255,255,255))
-        self.win.blit(text,(10+wave_bg.get_width()/2-text.get_width()/2,25))
+        self.win.blit(text,(10+wave_bg.get_width()/2-text.get_width()/2,15))
 
         pygame.display.update()
 
