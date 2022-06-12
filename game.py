@@ -34,7 +34,7 @@ wave_bg = pygame.transform.scale(pygame.image.load(os.path.join("game_assets","w
 # set up enemy waves
 # number of enemies for [scorpions, wizards, clubs, swords]
 waves = [
-    [20, 0, 0],
+    [20, 10, 0],
     [50, 0, 0],
     [100, 0, 0],
     [0, 20, 0],
@@ -49,7 +49,7 @@ waves = [
     [200, 100, 200]
 ]
 
-# load music
+# load munis
 pygame.mixer.music.load(os.path.join("game_assets","music.flac"))
 
 # tower names
@@ -103,16 +103,15 @@ class Game:
                     self.current_wave[x] -= 1
 
     def run(self):
-        # play music
-        pygame.mixer.music.play(loops=-1)
+        # pygame.mixer.music.play(loops=-1)
         run = True
         clock = pygame.time.Clock()
         while run:
             # set up runtime speed of the game
-            clock.tick(500)
+            clock.tick(200)
             if self.pause == False:
             # generate enemies by setting up the frequency of generation
-                if time.time() - self.timer >= random.randrange(1,6)/2:
+                if time.time() - self.timer >= random.randrange(1,6)/3:
                     self.timer = time.time()
                     self.gen_enemies()
 
