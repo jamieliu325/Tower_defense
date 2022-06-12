@@ -14,6 +14,7 @@ class Sword(Enemy):
         super().__init__()
         self.name="sword"
         self.money=200
+        # copy the list for animation
         self.imgs=imgs[:]
         self.max_health=100
         self.health=self.max_health

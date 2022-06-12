@@ -40,22 +40,9 @@ class Enemy:
         :return: None
         """
         length = 50
-        move_by = round(length/self.max_health)
-        health_bar = move_by*self.health
+        health_bar = length*self.health/self.max_health
         pygame.draw.rect(win,(255,0,0),(self.x-30,self.y-75,length,10),0)
-        pygame.draw.rect(win,(0,255,0),(self.x-30,self.y-75,health_bar,10),0)\
-
-    def collide(self,X,Y):
-        """
-        to check if position has hit enemy
-        :param X: int
-        :param Y: int
-        :return: bool
-        """
-        if self.x<=X<=self.x+self.width:
-            if self.y<=Y<=self.y+self.height:
-                return True
-        return False
+        pygame.draw.rect(win,(0,255,0),(self.x-30,self.y-75,health_bar,10),0)
 
     def move(self):
         """
@@ -67,18 +54,18 @@ class Enemy:
             self.animation_count = 0
 
         x1,y1 = self.path[self.path_pos]
-        x1 = x1+75
+        x1 = x1+80
         if self.path_pos + 1 >= len(self.path):
             x2,y2 = (-10,355)
         else:
             x2,y2 = self.path[self.path_pos+1]
-        x2 = x2 +75
+        x2 = x2 +80
 
-        dirn = ((x2-x1)*2, (y2-y1)*2)
+        dirn = ((x2-x1), (y2-y1))
         length = math.sqrt(dirn[0]**2+dirn[1]**2)
         dirn = (dirn[0]/length*self.speed_increase,dirn[1]/length*self.speed_increase)
 
-        # flip enemy
+        # flip enemy  when they are moving toward left
         if dirn[0]<0 and not self.flipped:
             self.flipped = True
             for x,img in enumerate(self.imgs):
@@ -105,7 +92,7 @@ class Enemy:
 
     def hit(self,damage):
         """
-        to check if an enemy has died or remove one health after each hit
+        remove one health after each hit and check if enemy has died
         :param damage: int
         :return: bool
         """

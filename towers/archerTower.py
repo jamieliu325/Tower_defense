@@ -21,7 +21,8 @@ class ArcherTowerLong(Tower):
     def __init__(self,x,y):
         super().__init__(x,y)
         self.tower_imgs = tower_imgs1
-        self.archer_imgs = archer_imgs1
+        # copy the list for animation
+        self.archer_imgs = archer_imgs1[:]
         self.archer_count = 0
         self.range = 200
         self.original_range = self.range
@@ -115,7 +116,8 @@ class ArcherTowerShort(ArcherTowerLong):
     def __init__(self,x,y):
         super().__init__(x,y)
         self.tower_imgs2=tower_imgs2
-        self.archer_imgs=archer_imgs2
+        # copy the list for animation
+        self.archer_imgs=archer_imgs2[:]
         self.archer_count = 0
         self.range = 120
         self.original_range=self.range

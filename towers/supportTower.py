@@ -63,7 +63,7 @@ class DamageTower(Tower):
 
     def support(self,towers):
         """
-        increase tower damage
+        increase tower damage effected
         :param towers: list
         :return: None
         """

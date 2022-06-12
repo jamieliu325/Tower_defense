@@ -16,4 +16,5 @@ class Scorpion(Enemy):
         self.money=1
         self.max_health=1
         self.health=self.max_health
+        # copy the list for animation
         self.imgs=imgs[:]

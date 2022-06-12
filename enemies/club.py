@@ -14,6 +14,7 @@ class Club(Enemy):
         super().__init__()
         self.name="club"
         self.money=5
+        # copy the list for animation
         self.imgs=imgs[:]
         self.max_health=5
         self.health=self.max_health

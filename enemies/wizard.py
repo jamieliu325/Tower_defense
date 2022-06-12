@@ -16,4 +16,5 @@ class Wizard(Enemy):
         self.money=3
         self.max_health=3
         self.health=self.max_health
+        # copy the list for animation
         self.imgs=imgs[:]

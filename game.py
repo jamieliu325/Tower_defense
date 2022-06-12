@@ -34,7 +34,7 @@ wave_bg = pygame.transform.scale(pygame.image.load(os.path.join("game_assets","w
 # set up enemy waves
 # number of enemies for [scorpions, wizards, clubs, swords]
 waves = [
-    [20, 0, 0],
+    [20, 10, 0],
     [50, 0, 0],
     [100, 0, 0],
     [0, 20, 0],
