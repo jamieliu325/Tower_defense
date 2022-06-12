@@ -2,22 +2,24 @@ import pygame
 import os
 import math
 from .tower import Tower
+from menu import Menu
 
+# load imgs for range and damage towers
 range_imgs = [
     pygame.transform.scale(pygame.image.load(os.path.join("game_assets/support_towers","4.png")),(90,90)),
     pygame.transform.scale(pygame.image.load(os.path.join("game_assets/support_towers","5.png")),(90,90))
 ]
 
+
 # range tower is to add extra range to each surrounding tower
 class RangeTower(Tower):
     def __init__(self,x,y):
         super().__init__(x,y)
-        self.range = 75
-        self.effect = [0.2,0.4]
+        self.range = 150
+        self.effect = [1.2,1.5]
         self.tower_imgs = range_imgs
         self.width=self.height=90
         self.name="range"
-        self.price=[2000]
 
     def draw(self,win):
         super().draw_radius(win)
@@ -25,7 +27,7 @@ class RangeTower(Tower):
 
     def support(self,towers):
         """
-        modify towers according to ability
+        increase the range of tower effected
         :param towers: list
         :return: None
         """
@@ -34,10 +36,11 @@ class RangeTower(Tower):
             x=tower.x
             y=tower.y
             dis=math.sqrt((self.x-x)**2+(self.y-y)**2)
-            if dis <= self.range+tower.width/2:
+            if dis <= self.range:
                 effected.append(tower)
         for tower in effected:
-            tower.range=tower.original_range+round(tower.range*self.effect[self.level-1])
+            tower.range=tower.original_range*self.effect[self.level-1]
+
 
 damage_imgs = [
     pygame.transform.scale(pygame.image.load(os.path.join("game_assets/support_towers","8.png")),(90,90)),
@@ -48,15 +51,19 @@ damage_imgs = [
 class DamageTower(Tower):
     def __init__(self,x,y):
         super().__init__(x,y)
-        self.range=100
+        self.range=150
         self.tower_imgs=damage_imgs
-        self.effect=[0.5,1]
+        self.effect=[1.5,2]
         self.name="damage"
-        self.price=[2000]
+        self.width=self.height=90
+
+    def draw(self,win):
+        super().draw_radius(win)
+        super().draw(win)
 
     def support(self,towers):
         """
-        modify towers according to ability
+        increase tower damage
         :param towers: list
         :return: None
         """
@@ -68,4 +75,4 @@ class DamageTower(Tower):
             if dis<=self.range+tower.width/2:
                 effected.append(tower)
         for tower in effected:
-            tower.damage = tower.original_damage+round(tower.original_damage*self.effect[self.level-1])
+            tower.damage = tower.original_damage*self.effect[self.level-1]

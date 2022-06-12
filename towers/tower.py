@@ -8,11 +8,15 @@ upgrade_btn = pygame.transform.scale(pygame.image.load(os.path.join("game_assets
 
 class Tower:
     def __init__(self,x,y):
+        """
+        x,y is where the mouse clicks
+        :param x: int
+        :param y: int
+        """
         self.x = x
         self.y = y
-        self.width = 0
-        self.height = 0
-        self.sell_price = [0,0,0]
+        self.width = 90
+        self.height = 90
         self.price = [0,0,0]
         self.level = 1
         self.selected = False
@@ -37,9 +41,11 @@ class Tower:
     def draw_radius(self,win):
         if self.selected:
             # draw a circle of tower's range
-            surface=pygame.Surface((self.range*4,self.range*4),pygame.SRCALPHA,32)
+            # SECALPHA is to create an empty per-pixel alpha Surface
+            surface=pygame.Surface((self.range*2,self.range*2),pygame.SRCALPHA)
             pygame.draw.circle(surface,(128,128,128,100),(self.range,self.range),self.range,0)
             win.blit(surface,(self.x-self.range,self.y-self.range))
+
 
     def draw_placement(self,win):
         # draw range circle
@@ -74,7 +80,7 @@ class Tower:
         upgrade cost
         :return: int
         """
-        return self.price[self.level-1]
+        return self.menu.get_item_cost()
 
     def move(self,x,y):
         """

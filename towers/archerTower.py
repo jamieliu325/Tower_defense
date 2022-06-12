@@ -21,7 +21,7 @@ class ArcherTowerLong(Tower):
     def __init__(self,x,y):
         super().__init__(x,y)
         self.tower_imgs = tower_imgs1
-        self.archer_imgs = archer_imgs1[:]
+        self.archer_imgs = archer_imgs1
         self.archer_count = 0
         self.range = 200
         self.original_range = self.range
@@ -37,14 +37,14 @@ class ArcherTowerLong(Tower):
 
     def get_upgrade_cost(self):
         """
-        get the cost for upgrade
+        get the cost for upgrading a tower
         :return: int
         """
         return self.menu.get_item_cost()
 
     def draw(self,win):
         """
-        draw arher tower and animated archer
+        draw arher tower and animated archer (archer_count)
         :param win: surface
         :return: None
         """
@@ -64,13 +64,6 @@ class ArcherTowerLong(Tower):
             add=-archer.get_width()+10
         win.blit(archer,(self.x+add,self.y-archer.get_height()-25))
 
-    def change_range(self,r):
-        """
-        change range of archer tower
-        :param r: int
-        :return: None
-        """
-        self.range = r
 
     def attack(self,enemies):
         """
@@ -83,7 +76,7 @@ class ArcherTowerLong(Tower):
         enemy_closest=[]
         for enemy in enemies:
             x,y=enemy.x,enemy.y
-            dis=math.sqrt((self.x-enemy.img.get_width()/2-x)**2+(self.y-enemy.img.get_width()/2-y)**2)
+            dis=math.sqrt((self.x-x-enemy.img.get_width()/2)**2+(self.y-enemy.img.get_width()/2-y)**2)
             if dis<self.range:
                 self.inRange=True
                 enemy_closest.append(enemy)
@@ -93,6 +86,7 @@ class ArcherTowerLong(Tower):
 
         if len(enemy_closest)>0:
             first_enemy = enemy_closest[0]
+            # hits enemy when the archer shows in the last animation
             if self.archer_count == 50:
                 if first_enemy.hit(self.damage):
                     money = first_enemy.money*2
@@ -121,7 +115,7 @@ class ArcherTowerShort(ArcherTowerLong):
     def __init__(self,x,y):
         super().__init__(x,y)
         self.tower_imgs2=tower_imgs2
-        self.archer_imgs=archer_imgs2[:]
+        self.archer_imgs=archer_imgs2
         self.archer_count = 0
         self.range = 120
         self.original_range=self.range

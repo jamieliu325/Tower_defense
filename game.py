@@ -70,7 +70,7 @@ class Game:
         self.timer = time.time()
         self.life_font = pygame.font.SysFont("comicsans",45)
         self.selected_tower = None
-        self.menu = VerticalMenu(self.width - side_img.get_width()+70,250,side_img)
+        self.menu = VerticalMenu(self.width - side_img.get_width(),130,side_img)
         self.menu.add_btn(buy_archer,"buy_archer",500)
         self.menu.add_btn(buy_archer_2,"buy_archer_2",750)
         self.menu.add_btn(buy_damage,"buy_damage",1000)
@@ -103,12 +103,12 @@ class Game:
                     self.current_wave[x] -= 1
 
     def run(self):
-        pygame.mixer.music.play(loops=-1)
+        # pygame.mixer.music.play(loops=-1)
         run = True
         clock = pygame.time.Clock()
         while run:
             # set up runtime speed of the game
-            clock.tick(500)
+            clock.tick(200)
             if self.pause == False:
             # generate enemies by setting up the frequency of generation
                 if time.time() - self.timer >= random.randrange(1,6)/3:
@@ -119,10 +119,11 @@ class Game:
             # check for moving object
             if self.moving_object:
                 self.moving_object.move(pos[0],pos[1])
-                tower_list=self.attack_towers[:]+self.support_towers[:]
+                tower_list=self.attack_towers+self.support_towers
                 collide=False
                 for tower in tower_list:
                     if tower.collide(self.moving_object):
+                        # if towers collide, placement color turns to red
                         collide = True
                         tower.place_color=(255,0,0,100)
                         self.moving_object.place_color=(255,0,0,100)
@@ -135,7 +136,7 @@ class Game:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     run = False
-                if event.type == pygame.MOUSEBUTTONUP:
+                elif event.type == pygame.MOUSEBUTTONUP:
                     # if you are moving an object
                     if self.moving_object:
                         not_allowewd = False
@@ -193,6 +194,9 @@ class Game:
                                     self.selected_tower=tw
                                 else:
                                     tw.selected=False
+            # add effects to attack tower
+            for tw in self.support_towers:
+                tw.support(self.attack_towers)
             # loop through enemies
             if not self.pause:
                 # check if enemies off screen
@@ -208,8 +212,8 @@ class Game:
                 # loop through towers
                 for tw in self.attack_towers:
                     self.money += tw.attack(self.enemies)
-                for tw in self.support_towers:
-                    tw.support(self.attack_towers)
+
+
                 # if lose
                 if self.lives<=0:
                     print("You Lose")
