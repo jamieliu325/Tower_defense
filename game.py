@@ -49,7 +49,7 @@ waves = [
     [200, 100, 200]
 ]
 
-# load munis
+# load music
 pygame.mixer.music.load(os.path.join("game_assets","music.flac"))
 
 # tower names
