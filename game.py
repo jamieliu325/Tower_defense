@@ -103,6 +103,7 @@ class Game:
                     self.current_wave[x] -= 1
 
     def run(self):
+
         # play background music
         pygame.mixer.music.play(loops=-1)
         run = True
