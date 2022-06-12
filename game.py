@@ -103,7 +103,8 @@ class Game:
                     self.current_wave[x] -= 1
 
     def run(self):
-        # pygame.mixer.music.play(loops=-1)
+        # play background music
+        pygame.mixer.music.play(loops=-1)
         run = True
         clock = pygame.time.Clock()
         while run:
